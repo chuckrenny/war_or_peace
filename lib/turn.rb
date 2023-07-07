@@ -1,21 +1,21 @@
 class Turn
-    attr_accessor :p1, :p2, :spoils, :turn_type
+    attr_accessor :p1, :p2, :spoils
 
     def initialize(player1, player2)
         @p1 = player1
         @p2 = player2
         @spoils = []
-        @turn_type = [:basic, :war, :mutually_assured_destruction]
     end
 
     def type
-        if p1.deck.rank_of_card_at(0) != p2.deck.rank_of_card_at(0)
-            :basic
-        elsif p1.deck.rank_of_card_at(0) == p2.deck.rank_of_card_at(0)
-            :war
-        elsif p1.deck.rank_of_card_at(0) == p2.deck.rank_of_card_at(0) &&
+        if p1.deck.rank_of_card_at(0) == p2.deck.rank_of_card_at(0) &&
             p1.deck.rank_of_card_at(2) == p2.deck.rank_of_card_at(2) 
             :mutually_assured_destruction
+        elsif p1.deck.rank_of_card_at(0) == p2.deck.rank_of_card_at(0) &&
+            p1.deck.rank_of_card_at(2) != p2.deck.rank_of_card_at(2)
+            :war
+        elsif p1.deck.rank_of_card_at(0) != p2.deck.rank_of_card_at(0)
+            :basic
         end
     end
 
@@ -26,7 +26,7 @@ class Turn
         elsif self.type == :war
             p1.deck.rank_of_card_at(2) > p2.deck.rank_of_card_at(2) ? p1 : p2
         elsif self.type == :mutually_assured_destruction
-            'Cold War is no longer cold. No Winner.'
+            'No Winner.'
         end
     end
 
